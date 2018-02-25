@@ -2,7 +2,6 @@
 
 data =input()
 
-out = 0
 on_field = ["p1","p2"]
 wickets = 0
 ball = 0
