@@ -1,44 +1,79 @@
 #https://www.reddit.com/r/dailyprogrammer/comments/7x81yg/20180213_challenge_351_easy_cricket_scoring/
-i = input()
 
-p = []
-b = 0
-e = 0
-s = [0,0]
+data =input()
 
-'''
-1.2wW6.2b34 
-Output description
-Individual scores of batsman that have played and number of extras. For example:
+out = 0
+on_field = ["p1","p2"]
+wickets = 0
+ball = 0
+extras = 0
+score = {}
 
- P1: 7  
- P2: 2  
- P3: 9  
- Extras: 2
- '''
-for x in i:
-	if b==6: 
-	    b=0
-	    s.reverse()
-		
-	if x=="W":
-	    p.append(s[0])
-	    s[0] = 0
-	    b+=1
-	
-	if x>="1" and x<="9":
-		s[0] += int(x)
-		if int(ord(x)%2)!=0:
-		    s.reverse()
-	if x in ".b":
-            b+=1
-        if x=='b':
-            s.reverse()
-	if x in "wb": e+=1
-	
-if s[1]>0: p.append(s[1])
-if s[0]>0: p.append(s[0])
+def player(i):
+        return "p"+str(i)
+        
+for i in range(1,12):
+        score[player(i)]=0
+        
+def change_strike():
+        on_field.reverse()
 
-for i,x in enumerate(p):
-    print("P"+str(i+1)+": "+str(x))
-print("Extras: "+str(e))
+def player_scored(runs):
+        score[on_field[0]] += runs
+
+def wicket_down():
+        if wickets < 10:
+                new_player = player(wickets+2)
+                on_field[0] = new_player
+                
+for d in data:
+        if ball == 6:
+                ball = 0
+                change_strike()
+                        
+        if d in ".b":
+                ball += 1
+
+        if d=='b':
+                change_strike()
+                        
+        if d in "wb":
+                extras += 1
+
+        if d >= "1" and d <= "9":
+                ball += 1
+                runs = int(d)
+                player_scored(runs)
+                if runs%2==1:
+                        change_strike()
+
+        if d=="W":
+                ball += 1
+                wickets += 1
+                wicket_down()
+
+
+
+for i in range(1,min(wickets+3,12)):
+        p = player(i)
+        print(p + ": " + str(score[p]))
+print("extras: " + str(extras))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
